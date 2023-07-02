@@ -1,22 +1,16 @@
 const mongoose = require('mongoose')
 
 const taskSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: [true, 'Title is required'],
+    },
     description: {
         type: String,
         required: [true, 'Description is required'],
     },
-    images: {
-        type: Array,
-    },
+    completed: Boolean,
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    visible: {
-        type: String,
-        enum: ['Public', 'Friends', 'Private'],
-        default: 'Public'
-    },
-    likeCount: {
-        type: Array
-    },
 },
     { timestamps: true },
 )
