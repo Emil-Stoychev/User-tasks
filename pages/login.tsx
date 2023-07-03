@@ -1,22 +1,27 @@
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
+
+interface FormData {
+  name: string;
+  value: string;
+}
 
 export default function Login() {
   const [data, setData] = useState({
     username: "",
     password: "",
   });
-  const route = useRouter()
+  const route = useRouter();
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData((state) => ({
       ...state,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const onSubmitForm = async (e) => {
+  const onSubmitForm = async (e: FormEvent<FormData>) => {
     e.preventDefault();
 
     if (data.username != "" && data.password != "") {
@@ -29,15 +34,14 @@ export default function Login() {
       });
       const jsonData = await response.json();
 
-      if(jsonData.message) {
+      if (jsonData.message) {
         return console.log(jsonData.message);
       }
 
       localStorage.setItem("sessionStorage", jsonData);
-      route.push('/')
+      route.push("/");
     }
   };
-
 
   return (
     <>
