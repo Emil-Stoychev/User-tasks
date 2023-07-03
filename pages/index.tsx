@@ -35,6 +35,7 @@ export default function Home({
   const [tasks, setTasks] = useState<Task[]>([]);
   const [savedTask, setSavedTask] = useState<Task[]>([]);
   const [search, setSearch] = useState("");
+  const [sortOption, setSortOption] = useState(false);
   const [session, setSession] = useState<String | null | undefined>(undefined);
   const route = useRouter();
 
@@ -71,8 +72,14 @@ export default function Home({
   }, [search]);
 
   const sortTask = () => {
-    console.log('sorting');
-  }
+    setSortOption((state) => !state);
+
+    if (!sortOption) {
+      setTasks((state) => state.sort((a, b) => b.title.localeCompare(a.title)));
+    } else {
+      setTasks((state) => state.sort((a, b) => a.title.localeCompare(b.title)));
+    }
+  };
 
   return (
     <Layout>
@@ -87,7 +94,12 @@ export default function Home({
 
           {session != undefined ? (
             <>
-              <input type="search" placeholder="search" value={search} onChange={(e) => setSearch(e.target.value)} />
+              <input
+                type="search"
+                placeholder="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
               <button onClick={() => sortTask()}>sort</button>
               <AllTasksComp tasks={tasks} setTasks={setTasks} />
             </>
