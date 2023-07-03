@@ -92,20 +92,15 @@ export default function Home({
         <div>
           <h2>Home page</h2>
 
-          {session != undefined ? (
+          {session != undefined 
+          ?
             <>
-              <input
-                type="search"
-                placeholder="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+              <input type="search" placeholder="search" value={search} onChange={(e) => setSearch(e.target.value)} />
               <button onClick={() => sortTask()}>sort</button>
               <AllTasksComp tasks={tasks} setTasks={setTasks} />
             </>
-          ) : (
-            <GuestComp />
-          )}
+           : <GuestComp />
+          }
         </div>
       </main>
     </Layout>

@@ -1,5 +1,6 @@
 import clientPromise from "../../lib/mongodb";
 import jwt from 'jsonwebtoken'
+const bcrypt = require('bcrypt')
 
 const secret = 'iasoid2319S!@#$SDAFas'
 
@@ -11,10 +12,11 @@ export default async (req, res) => {
         let user = await db.collection("users").findOne({ username: req.body.username })
 
         if (user == null) {
+            let hashedPassword = await bcrypt.hash(req.body.password, 10)
+
             user = await db.collection("users").insertOne({
                 username: req.body.username,
-                password: req.body.password,
-                ownPosts: []
+                password: hashedPassword,
             })
 
             user = await db.collection("users").findOne({ username: req.body.username })

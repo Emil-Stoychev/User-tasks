@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Password is required'],
     },
-    ownTasks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }],
     releasedDate: String
 })
 
