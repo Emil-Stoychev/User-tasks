@@ -33,7 +33,8 @@ export default function Home({
   isConnected,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [searchTask, setSearchTask] = useState<Task[]>([]);
+  const [savedTask, setSavedTask] = useState<Task[]>([]);
+  const [search, setSearch] = useState("");
   const [session, setSession] = useState<String | null | undefined>(undefined);
   const route = useRouter();
 
@@ -50,6 +51,7 @@ export default function Home({
           route.push("/login");
 
           setTasks([]);
+          setSavedTask([]);
           setSession(undefined);
           localStorage.removeItem("sessionStorage");
 
@@ -57,10 +59,20 @@ export default function Home({
         }
 
         setTasks(jsonData);
+        setSavedTask(jsonData);
         setSession(localStorage.getItem("sessionStorage"));
       })();
     }
   }, []);
+
+  useEffect(() => {
+    setTasks(savedTask);
+    setTasks((state) => state.filter((x) => x.title.includes(search)));
+  }, [search]);
+
+  const sortTask = () => {
+    console.log('sorting');
+  }
 
   return (
     <Layout>
@@ -73,10 +85,15 @@ export default function Home({
         <div>
           <h2>Home page</h2>
 
-          {session != undefined 
-              ? <AllTasksComp tasks={tasks} setTasks={setTasks} />
-              : <GuestComp />
-          }
+          {session != undefined ? (
+            <>
+              <input type="search" placeholder="search" value={search} onChange={(e) => setSearch(e.target.value)} />
+              <button onClick={() => sortTask()}>sort</button>
+              <AllTasksComp tasks={tasks} setTasks={setTasks} />
+            </>
+          ) : (
+            <GuestComp />
+          )}
         </div>
       </main>
     </Layout>
