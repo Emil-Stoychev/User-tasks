@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { TaskTemplate } from "./taskTemplate";
 
-export const AllTasksComp = ({ tasks, setTasks }) => {
+export const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
   const route = useRouter();
 
   const deleteTask = async (taskId: any) => {
@@ -24,7 +24,7 @@ export const AllTasksComp = ({ tasks, setTasks }) => {
       return console.log(jsonData.message);
     }
 
-    setTasks((state: any) =>
+    props.setTasks((state: any) =>
       state.filter((x: any) => x?._id != jsonData.taskId)
     );
   };
@@ -50,7 +50,7 @@ export const AllTasksComp = ({ tasks, setTasks }) => {
       return console.log(jsonData.message);
     }
 
-    setTasks((state: any) =>
+    props.setTasks((state: any) =>
       state.map((x: any) => {
         if (x?._id == jsonData.taskId) {
           x.completed = jsonData.status;
@@ -65,11 +65,11 @@ export const AllTasksComp = ({ tasks, setTasks }) => {
     <>
       <h1>Your table with tasks</h1>
 
-      {tasks.length == 0 && <h2>You don't have tasks yet.</h2>}
+      {props.tasks.length == 0 && <h2>You don't have tasks yet.</h2>}
 
       <ul>
-        {tasks.map((task: any) => (
-          <TaskTemplate key={task._id} task={task} setTasks={setTasks} deleteTask={deleteTask} changeStatus={changeStatus} />
+        {props.tasks.map((task: any) => (
+          <TaskTemplate key={task._id} task={task} setTasks={props.setTasks} deleteTask={deleteTask} changeStatus={changeStatus} />
         ))}
       </ul>
     </>

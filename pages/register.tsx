@@ -1,6 +1,20 @@
 import { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
+import Joi from 'joi'
+
+const schema = Joi.object({
+  username: Joi.string()
+    .alphanum()
+    .min(3)
+    .max(16)
+    .required(),
+
+  password: Joi.string()
+    .min(3)
+    .max(16)
+    .required(),
+})
 
 export default function Register() {
   const [data, setData] = useState({
@@ -9,17 +23,20 @@ export default function Register() {
   });
   const route = useRouter();
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = (e: any) => {
     setData((state) => ({
       ...state,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const onSubmitForm = async (e) => {
+  const onSubmitForm = async (e: any) => {
     e.preventDefault();
 
-    if (data.username != "" && data.password != "") {
+    let validateData = schema.validate(data)
+    console.log(validateData?.error?.message);
+
+    if (validateData?.error?.message == undefined) {
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {

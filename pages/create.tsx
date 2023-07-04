@@ -1,6 +1,20 @@
 import { useState } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
+import Joi from 'joi'
+
+const schema = Joi.object({
+  title: Joi.string()
+      .alphanum()
+      .min(3)
+      .max(16)
+      .required(),
+
+  description: Joi.string()
+      .min(3)
+      .max(16)
+      .required(),
+})
 
 export default function Create() {
   const [data, setData] = useState({
@@ -19,7 +33,10 @@ export default function Create() {
   const onSubmitForm = async (e: any) => {
     e.preventDefault();
 
-    if (data.title != "" && data.description != "") {
+    let validateData = schema.validate(data)
+    console.log(validateData?.error?.message);
+
+    if (validateData?.error?.message == undefined) {
       const response = await fetch("/api/create", {
         method: "POST",
         headers: {
@@ -29,8 +46,6 @@ export default function Create() {
         body: JSON.stringify(data),
       });
       const jsonData = await response.json();
-
-      console.log(jsonData);
 
       if (jsonData.message != null) {
         if (jsonData.message == "Invalid token, please login!") {

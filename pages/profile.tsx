@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
+import { Profile } from "./types/profileInterface";
 
 export default function Profile() {
   const [data, setData] = useState({
@@ -16,17 +17,17 @@ export default function Profile() {
     oldPassword: "",
     newPassword: "",
   });
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<Profile | null>(null);
   const route = useRouter();
 
-  const onChangeEditHandler = (e) => {
+  const onChangeEditHandler = (e: any) => {
     setEditOption((state) => ({
       ...state,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const onChangeConfirmHandler = (e) => {
+  const onChangeConfirmHandler = (e: any) => {
     setDelOption((state) => ({
       ...state,
       [e.target.name]: e.target.value,
@@ -34,8 +35,6 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    console.log(localStorage.getItem("sessionStorage"));
-
     if (localStorage.getItem("sessionStorage")) {
       (async function req() {
         const headers = {
@@ -43,8 +42,6 @@ export default function Profile() {
         };
         const response = await fetch("/api/profile", { headers });
         const jsonData = await response.json();
-
-        console.log(jsonData);
 
         if (jsonData?.message) {
           route.push("/login");

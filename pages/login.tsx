@@ -1,17 +1,33 @@
 import { useState, FormEvent } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
+import Joi from 'joi'
+import useGlobalErrorsHook from './hooks/useGlobalErrors'
 
 interface FormData {
   name: string;
   value: string;
 }
 
+const schema = Joi.object({
+  username: Joi.string()
+    .alphanum()
+    .min(3)
+    .max(16)
+    .required(),
+
+  password: Joi.string()
+    .min(3)
+    .max(16)
+    .required(),
+})
+
 export default function Login() {
   const [data, setData] = useState({
     username: "",
     password: "",
   });
+  let [errors, setErrors] = useGlobalErrorsHook()
   const route = useRouter();
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +40,9 @@ export default function Login() {
   const onSubmitForm = async (e: FormEvent<FormData>) => {
     e.preventDefault();
 
-    if (data.username != "" && data.password != "") {
+    let validateData = schema.validate(data)
+
+    if (validateData?.error?.message == undefined) {
       const response = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -35,11 +53,15 @@ export default function Login() {
       const jsonData = await response.json();
 
       if (jsonData.message) {
+        setErrors({ message: jsonData.message, type: '' })
+
         return console.log(jsonData.message);
       }
 
       localStorage.setItem("sessionStorage", jsonData);
       route.push("/");
+    } else {
+      setErrors({ message: validateData?.error?.message, type: '' })
     }
   };
 

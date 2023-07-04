@@ -1,7 +1,8 @@
 import clientPromise from "../lib/mongodb";
 import Layout from './Layout'
+import { Task } from "./types/taskInterface";
 
-export default function Tasks({ tasks }) {
+export default function Tasks(props: { tasks: [Task] }) {
     return (
         <>
             <Layout>
@@ -11,7 +12,7 @@ export default function Tasks({ tasks }) {
                         <small>(According to Metacritic)</small>
                     </p>
                     <ul>
-                        {tasks.map((task) => (
+                        {props.tasks.map((task: Task) => (
                             <li key={task._id}>
                                 <h2>{task.title}</h2>
                                 <h3>{task.completed ? 'true' : 'false'}</h3>
