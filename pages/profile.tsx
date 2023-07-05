@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
 import { Profile } from "./types/profileInterface";
+import styles from "./index.module.css";
 
 export default function Profile() {
   const [data, setData] = useState({
@@ -59,12 +60,16 @@ export default function Profile() {
   const deleteProfile = async (e: any) => {
     e.preventDefault();
 
-    if (delOption.field != "" && delOption.field != "" && delOption.field == 'CONFIRM') {
+    if (
+      delOption.field != "" &&
+      delOption.field != "" &&
+      delOption.field == "CONFIRM"
+    ) {
       await fetch(`/api/deleteProfile/${user?._id.toString()}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
       });
 
       localStorage.removeItem("sessionStorage");
@@ -79,8 +84,8 @@ export default function Profile() {
       let data = {
         oldPassword: editOption.oldPassword,
         newPassword: editOption.newPassword,
-        userId: user?._id
-      }
+        userId: user?._id,
+      };
 
       const response = await fetch("/api/editProfile", {
         method: "PUT",
@@ -91,63 +96,127 @@ export default function Profile() {
       });
       const jsonData = await response.json();
 
-      if (jsonData.message != 'Successfully!') {
+      if (jsonData.message != "Successfully!") {
         return console.log(jsonData.message);
       } else {
-        setEditOption({ option: false, oldPassword: '', newPassword: ''})
+        setEditOption({ option: false, oldPassword: "", newPassword: "" });
       }
     }
   };
-  
 
   return (
     <>
       <Layout>
-        <h2>Profile page</h2>
-
-        <div>
-          <div>
+        <main className={styles.main}>
+          <div className="card text-center">
             <img
               src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              width="100"
-              height="100"
+              alt="Profile"
+              className="card-img-top"
+              width="200px"
             />
-          </div>
+            <div className="card-body">
+              <h5 className="card-title">{user?.username}</h5>
 
-          <div>
-            <h2>{user?.username}</h2>
-
-            <div>
-              {!delOption.option && !editOption.option &&
-                  <>
-                  <button onClick={() => setEditOption({option: true,oldPassword: '', newPassword: ''})}>Change password</button>
-                  <button onClick={() => setDelOption({option: true, field: ''})} >Delete profile</button>
-                </>
-              }
-
-
-              {delOption.option &&
+              {!delOption.option && !editOption.option && (
                 <>
-                    <label>Please type "CONFIRM" to delete acc!</label>
-                    <input type="text" name="field" value={delOption.field} onChange={(e) => onChangeConfirmHandler(e)} />
-                    <button onClick={deleteProfile}>✓</button>
-                    <button onClick={() => setDelOption({option: false, field: ''})}>X</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() =>
+                      setEditOption({
+                        option: true,
+                        oldPassword: "",
+                        newPassword: "",
+                      })
+                    }
+                  >
+                    Change password
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => setDelOption({ option: true, field: "" })}
+                  >
+                    Delete profile
+                  </button>
                 </>
-                }
+              )}
 
-                {editOption.option &&
-                  <>
-                    <label>Old password</label>
-                    <input type="password" name="oldPassword" value={editOption.oldPassword} onChange={(e) => onChangeEditHandler(e)} />
-                    <label>New password</label>
-                    <input type="password" name="newPassword" value={editOption.newPassword} onChange={(e) => onChangeEditHandler(e)} />
-                    <button onClick={onSubmitEditPass}>✓</button>
-                    <button onClick={() => setEditOption({option: false, oldPassword: '', newPassword: ''})}>X</button>
-                  </>
-                }
+              {delOption.option && (
+                <>
+                  <form action="/action_page.php">
+                    <div className="form-group">
+                      <label>Please type "CONFIRM" to delete acc!</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="field"
+                        value={delOption.field}
+                        onChange={(e) => onChangeConfirmHandler(e)}
+                      />
+                    </div>
+                    <button className="btn btn-primary" onClick={deleteProfile}>
+                      ✓
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => setDelOption({ option: false, field: "" })}
+                    >
+                      X
+                    </button>
+                  </form>
+                </>
+              )}
+
+              {editOption.option && (
+                <>
+                  <form action="/action_page.php">
+                    <div className="form-group">
+                      <label htmlFor="oldPass">Old Password:</label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        id="oldPass"
+                        value={editOption.oldPassword}
+                        name="oldPassword"
+                        onChange={(e) => onChangeEditHandler(e)}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="pwd">New Password:</label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="newPassword"
+                        id="pwd"
+                        value={editOption.newPassword}
+                        onChange={(e) => onChangeEditHandler(e)}
+                      />
+                    </div>
+                    <button
+                      className="btn btn-primary"
+                      onClick={onSubmitEditPass}
+                    >
+                      ✓
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() =>
+                        setEditOption({
+                          option: false,
+                          oldPassword: "",
+                          newPassword: "",
+                        })
+                      }
+                    >
+                      X
+                    </button>
+                  </form>
+                </>
+              )}
             </div>
           </div>
-        </div>
+        </main>
+        <div></div>
       </Layout>
     </>
   );

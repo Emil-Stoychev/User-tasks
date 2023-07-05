@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
 import Joi from 'joi'
+import styles from './index.module.css'
 
 const schema = Joi.object({
   title: Joi.string()
@@ -64,26 +65,41 @@ export default function Create() {
   return (
     <>
       <Layout>
+        <main className={styles.main}>
         <h2>Create page</h2>
 
-        <form>
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={data.title}
-            onChange={onChangeHandler}
-          />
-          <input
-            type="text"
-            name="description"
-            placeholder="Description"
-            value={data.description}
-            onChange={onChangeHandler}
-          />
-
-          <button onClick={onSubmitForm}>Create</button>
+        <form action="/action_page.php">
+          <div className="form-group">
+            <label htmlFor="title">Title:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="title"
+              value={data.title}
+              name="title"
+              onChange={onChangeHandler}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="description"
+              id="description"
+              value={data.description}
+              onChange={onChangeHandler}
+            />
+          </div>
+          <button
+            type="submit"
+            className="btn btn-default"
+            onClick={onSubmitForm}
+          >
+            Create
+          </button>
         </form>
+      </main>
       </Layout>
     </>
   );
