@@ -12,7 +12,7 @@ const schema = Joi.object({
 
   description: Joi.string()
       .min(3)
-      .max(16)
+      .max(300)
       .required(),
 })
 

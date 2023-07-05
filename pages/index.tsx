@@ -85,17 +85,35 @@ export default function Home({
     <Layout>
       <main className={styles.main}>
         <div>
-          <h2>Home page</h2>
-
-          {session != undefined 
-          ?
+          {session != undefined ? (
             <>
-              <input type="search" placeholder="search" value={search} onChange={(e) => setSearch(e.target.value)} />
-              <button onClick={() => sortTask()}>sort</button>
+              <div className="container">
+                <div className="row justify-content-center">
+                  <div className="col-lg-6 col-md-8">
+                    <div className="d-flex align-items-center">
+                      <input
+                        type="search"
+                        className="form-control mr-2"
+                        placeholder="Search"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                      />
+                      <button
+                        onClick={() => sortTask()}
+                        className="btn btn-primary"
+                      >
+                        Sort
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <AllTasksComp tasks={tasks} setTasks={setTasks} />
             </>
-           : <GuestComp />
-          }
+          ) : (
+            <GuestComp />
+          )}
         </div>
       </main>
     </Layout>
