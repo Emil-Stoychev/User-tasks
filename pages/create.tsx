@@ -6,9 +6,8 @@ import styles from './index.module.css'
 
 const schema = Joi.object({
   title: Joi.string()
-      .alphanum()
       .min(3)
-      .max(16)
+      .max(32)
       .required(),
 
   description: Joi.string()
@@ -82,14 +81,13 @@ export default function Create() {
           </div>
           <div className="form-group">
             <label htmlFor="description">Description:</label>
-            <input
-              type="text"
-              className="form-control"
+            <textarea
+              className={`form-control ${styles.description}`}
               name="description"
               id="description"
-              value={data.description}
+              value={data?.description || ''}
               onChange={onChangeHandler}
-            />
+            ></textarea>
           </div>
           <button
             type="submit"

@@ -90,7 +90,7 @@ export default function Home({
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-lg-6 col-md-8">
-                    <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center" id={styles.searchBtns}>
                       <input
                         type="search"
                         className="form-control mr-2"

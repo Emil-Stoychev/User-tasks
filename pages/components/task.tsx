@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { TaskTemplate } from "./taskTemplate";
+import styles from './taskTemplate.module.css'
 
 export const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
   const route = useRouter();
@@ -63,11 +64,10 @@ export const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => 
 
   return (
     <>
-      <h1>Your table with tasks</h1>
-
+      <br />
       {props.tasks.length == 0 && <h2>You don't have tasks yet.</h2>}
 
-      <ul>
+      <ul className={styles.allCards}>
         {props.tasks.map((task: any) => (
           <TaskTemplate key={task._id} task={task} setTasks={props.setTasks} deleteTask={deleteTask} changeStatus={changeStatus} />
         ))}
