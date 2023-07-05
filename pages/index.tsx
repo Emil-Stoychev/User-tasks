@@ -83,11 +83,6 @@ export default function Home({
 
   return (
     <Layout>
-      <Head>
-        <title>User Tasks</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <main className={styles.main}>
         <div>
           <h2>Home page</h2>

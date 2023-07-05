@@ -1,0 +1,8 @@
+.footer {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: #222222;
+    color: white;
+    letter-spacing: 0.2rem;
+    user-select: none;
+  }
