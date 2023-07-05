@@ -38,3 +38,17 @@
     overflow: auto;
     height: 80vh;
 }
+
+
+.mainHeader {
+    text-align: center;
+    letter-spacing: 1px;
+    user-select: none;
+    padding: 1rem;
+}
+
+
+#backgroundImage {
+    width: 100%;
+    margin: 5rem auto 0 auto;
+}
