@@ -11,7 +11,7 @@ interface FormData {
 }
 
 const schema = Joi.object({
-  username: Joi.string().alphanum().min(3).max(16).required(),
+  username: Joi.string().min(3).max(16).required(),
 
   password: Joi.string().min(3).max(16).required(),
 });

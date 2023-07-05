@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Task } from "../types/taskInterface";
 import Joi from "joi";
 import styles from "./taskTemplate.module.css";
+import useGlobalErrorsHook from "../hooks/useGlobalErrors";
 
 const schema = Joi.object({
   title: Joi.string().min(3).max(32).required(),
@@ -16,6 +17,7 @@ export const TaskTemplate = (props: {
   deleteTask: Function;
   changeStatus: Function;
 }) => {
+  let [errors, setErrors] = useGlobalErrorsHook();
   const [isEdit, setIsEdit] = useState(false);
   const [data, setData] = useState({
     title: "",
@@ -64,7 +66,7 @@ export const TaskTemplate = (props: {
           route.push("/login");
         }
 
-        return console.log(jsonData?.message);
+        return setErrors({ message: jsonData?.message, type: "" });
       }
 
       props.setTasks((state: any) =>
@@ -80,6 +82,8 @@ export const TaskTemplate = (props: {
 
       setIsEdit(false);
       setData({ title: "", description: "" });
+    } else {
+      return setErrors({ message: validateData?.error?.message, type: "" });
     }
   };
 
@@ -105,7 +109,9 @@ export const TaskTemplate = (props: {
                 onChange={onChangeHandler}
                 name="description"
                 placeholder="Description"
-              >{data.description}</textarea>
+              >
+                {data.description}
+              </textarea>
               <button className="btn btn-primary" onClick={onEditSubmit}>
                 ✓
               </button>
