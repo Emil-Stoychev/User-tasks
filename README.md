@@ -1,6 +1,8 @@
 # User Tasks API Documentation
 This is the API documentation where you will be able to find information on all information about the "*User Tasks*" project.
 
+Deploy on Vercel: https://user-tasks-opdyed1ry-emil-stoychev.vercel.app/
+
 ## Used dependencies:
 - react
 - react-dom
