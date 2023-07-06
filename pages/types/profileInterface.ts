@@ -1,4 +1,4 @@
-export interface Profile {
+export interface ProfileInterface {
     _id: string;
     username: string;
     password: string;

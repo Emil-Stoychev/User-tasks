@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ProfileInterface } from "../../types/profileInterface";
 
 export default function Navigation(props: {
-  user: Function;
+  user: ProfileInterface;
   setUser: Function;
 }) {
   const route = useRouter();

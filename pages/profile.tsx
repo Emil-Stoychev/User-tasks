@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
-import { Profile } from "./types/profileInterface";
+import { ProfileInterface } from "./types/profileInterface";
 import { ProfileTemplate } from "./components/profileTemplate";
 import useGlobalErrorsHook from "./hooks/useGlobalErrors";
 import Joi from "joi";
+import { DeleteOption } from "./types/delOption";
+import { EditOptionIn } from "./types/editOptionIn";
+
 
 const schema = Joi.object({
   oldPassword: Joi.string().min(3).max(16).required(),
@@ -18,17 +21,17 @@ export default function Profile() {
     username: "",
     password: "",
   });
-  const [delOption, setDelOption] = useState({
+  const [delOption, setDelOption] = useState<DeleteOption>({
     option: false,
     field: "",
   });
-  const [editOption, setEditOption] = useState({
+  const [editOption, setEditOption] = useState<EditOptionIn>({
     option: false,
     oldPassword: "",
     newPassword: "",
   });
   let [errors, setErrors] = useGlobalErrorsHook();
-  const [user, setUser] = useState<Profile | null>(null);
+  const [user, setUser] = useState<ProfileInterface | null>(null);
   const route = useRouter();
 
   useEffect(() => {

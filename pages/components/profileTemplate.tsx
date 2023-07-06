@@ -1,23 +1,26 @@
 import styles from "../index.module.css";
+import { ProfileInterface } from "../types/profileInterface";
+import { DeleteOption } from "../types/delOption";
+import { EditOptionIn } from "../types/editOptionIn";
 
-export const ProfileTemplate = ({
-  user,
-  delOption,
-  setEditOption,
-  setDelOption,
-  editOption,
-  deleteProfile,
-  onSubmitEditPass,
+export const ProfileTemplate = (props: {
+  user: ProfileInterface,
+  delOption: DeleteOption,
+  setEditOption: Function,
+  setDelOption: Function,
+  editOption: EditOptionIn,
+  deleteProfile: Function,
+  onSubmitEditPass: Function,
 }) => {
   const onChangeEditHandler = (e: any) => {
-    setEditOption((state) => ({
+    props.setEditOption((state: any) => ({
       ...state,
       [e.target.name]: e.target.value,
     }));
   };
 
   const onChangeConfirmHandler = (e: any) => {
-    setDelOption((state) => ({
+    props.setDelOption((state: any) => ({
       ...state,
       [e.target.name]: e.target.value,
     }));
@@ -34,14 +37,14 @@ export const ProfileTemplate = ({
             width="200px"
           />
           <div className="card-body">
-            <h5 className="card-title">{user?.username}</h5>
+            <h5 className="card-title">{props.user?.username}</h5>
 
-            {!delOption.option && !editOption.option && (
+            {!props.delOption.option && !props.editOption.option && (
               <>
                 <button
                   className="btn btn-primary"
                   onClick={() =>
-                    setEditOption({
+                    props.setEditOption({
                       option: true,
                       oldPassword: "",
                       newPassword: "",
@@ -52,14 +55,14 @@ export const ProfileTemplate = ({
                 </button>
                 <button
                   className="btn btn-primary"
-                  onClick={() => setDelOption({ option: true, field: "" })}
+                  onClick={() => props.setDelOption({ option: true, field: "" })}
                 >
                   Delete profile
                 </button>
               </>
             )}
 
-            {delOption.option && (
+            {props.delOption.option && (
               <>
                 <form action="/action_page.php">
                   <div className="form-group">
@@ -68,16 +71,16 @@ export const ProfileTemplate = ({
                       className="form-control"
                       type="text"
                       name="field"
-                      value={delOption.field}
+                      value={props.delOption.field}
                       onChange={(e) => onChangeConfirmHandler(e)}
                     />
                   </div>
-                  <button className="btn btn-primary" onClick={deleteProfile}>
+                  <button className="btn btn-primary" onClick={() => props.deleteProfile()}>
                     ✓
                   </button>
                   <button
                     className="btn btn-primary"
-                    onClick={() => setDelOption({ option: false, field: "" })}
+                    onClick={() => props.setDelOption({ option: false, field: "" })}
                   >
                     X
                   </button>
@@ -85,7 +88,7 @@ export const ProfileTemplate = ({
               </>
             )}
 
-            {editOption.option && (
+            {props.editOption.option && (
               <>
                 <form action="/action_page.php">
                   <div className="form-group">
@@ -94,7 +97,7 @@ export const ProfileTemplate = ({
                       type="password"
                       className="form-control"
                       id="oldPass"
-                      value={editOption.oldPassword}
+                      value={props.editOption.oldPassword}
                       name="oldPassword"
                       onChange={(e) => onChangeEditHandler(e)}
                     />
@@ -106,20 +109,20 @@ export const ProfileTemplate = ({
                       className="form-control"
                       name="newPassword"
                       id="pwd"
-                      value={editOption.newPassword}
+                      value={props.editOption.newPassword}
                       onChange={(e) => onChangeEditHandler(e)}
                     />
                   </div>
                   <button
                     className="btn btn-primary"
-                    onClick={onSubmitEditPass}
+                    onClick={() => props.onSubmitEditPass()}
                   >
                     ✓
                   </button>
                   <button
                     className="btn btn-primary"
                     onClick={() =>
-                      setEditOption({
+                      props.setEditOption({
                         option: false,
                         oldPassword: "",
                         newPassword: "",
