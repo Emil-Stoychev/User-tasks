@@ -30,7 +30,6 @@ export default function Create() {
     e.preventDefault();
 
     let validateData = schema.validate(data);
-    console.log(validateData?.error?.message);
 
     if (validateData?.error?.message == undefined) {
       const response = await fetch("/api/create", {
@@ -44,7 +43,7 @@ export default function Create() {
       const jsonData = await response.json();
 
       if (jsonData.message != null) {
-        if (jsonData.message == "Invalid token, please login!") {
+        if (jsonData.message == "Invalid token, please login!" || jsonData.message == "User not found!") {
           localStorage.removeItem("sessionStorage");
 
           route.push("/login");

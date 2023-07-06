@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import { TaskTemplate } from "./taskTemplate";
 import styles from './taskTemplate.module.css'
+import useGlobalErrorsHook from "../hooks/useGlobalErrors";
 
 export const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
   const route = useRouter();
+  const [errors, setErrors] = useGlobalErrorsHook()
 
   const deleteTask = async (taskId: any) => {
     const response = await fetch(`/api/deleteTask/${taskId}`, {
@@ -16,13 +18,14 @@ export const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => 
     const jsonData = await response.json();
 
     if (jsonData.message != null) {
-      if (jsonData.message == "Invalid token, please login!") {
+      if (jsonData.message == "Invalid token, please login!" || jsonData?.message == 'User not found!') {
         localStorage.removeItem("sessionStorage");
+        setErrors({message: jsonData?.message, type: ''})
 
         route.push("/login");
       }
 
-      return console.log(jsonData.message);
+      return setErrors({message: jsonData?.message, type: ''})
     }
 
     props.setTasks((state: any) =>
@@ -42,13 +45,14 @@ export const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => 
     const jsonData = await response.json();
 
     if (jsonData.message != null) {
-      if (jsonData.message == "Invalid token, please login!") {
+      if (jsonData.message == "Invalid token, please login!" || jsonData?.message == 'User not found!') {
         localStorage.removeItem("sessionStorage");
+        setErrors({message: jsonData?.message, type: ''})
 
         route.push("/login");
       }
 
-      return console.log(jsonData.message);
+      return setErrors({message: jsonData?.message, type: ''})
     }
 
     props.setTasks((state: any) =>

@@ -49,6 +49,15 @@
 
 
 #backgroundImage {
-    width: 100%;
+    width: 85%;
     margin: 5rem auto 0 auto;
 }
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    min-height: 100vh;
+    height: 100vh;
+    padding: 2rem 4rem;
+  }

@@ -12,7 +12,7 @@ export default async (req, res) => {
 
         let user = await db.collection('users').findOne({ _id: new ObjectId(req.body.userId) })
 
-        if (!user._id) {
+        if (!user?._id) {
             return res.json({ message: 'User not found!' })
         }
 

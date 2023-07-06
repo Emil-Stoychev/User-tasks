@@ -45,7 +45,8 @@ export default function Profile() {
 
           setUser(null);
           localStorage.removeItem("sessionStorage");
-          return console.log(jsonData?.message);
+
+          return setErrors({message: jsonData?.message, type: ''})
         }
 
         setUser(jsonData);
@@ -61,12 +62,16 @@ export default function Profile() {
       delOption.field != "" &&
       delOption.field == "CONFIRM"
     ) {
-      await fetch(`/api/deleteProfile/${user?._id.toString()}`, {
+      let response = await fetch(`/api/deleteProfile/${user?._id.toString()}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `${localStorage.getItem("sessionStorage")}`,
         },
       });
+      const jsonData = await response.json();
+
+      setErrors({message: jsonData?.message, type: ''})
 
       localStorage.removeItem("sessionStorage");
       route.push("/login");

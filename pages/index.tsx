@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { AllTasksComp } from "./components/task";
 import { GuestComp } from "./components/guestComp";
 import { Task } from "./types/taskInterface";
+import useGlobalErrorsHook from "./hooks/useGlobalErrors";
 
 type ConnectionStatus = {
   isConnected: boolean;
@@ -38,6 +39,7 @@ export default function Home({
   const [sortOption, setSortOption] = useState(false);
   const [session, setSession] = useState<String | null | undefined>(undefined);
   const route = useRouter();
+  const [errors, setErrors] = useGlobalErrorsHook()
 
   useEffect(() => {
     if (localStorage.getItem("sessionStorage")) {
@@ -56,7 +58,7 @@ export default function Home({
           setSession(undefined);
           localStorage.removeItem("sessionStorage");
 
-          return console.log(jsonData.message);
+          return setErrors({message: jsonData?.message, type: ''})
         }
 
         setTasks(jsonData);

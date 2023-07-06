@@ -17,6 +17,10 @@ export default async (req, res) => {
 
         let user = await db.collection('users').findOne({ _id: new ObjectId(userData._id) })
 
+        if (user?._id == null) {
+            return res.json({ message: 'User does not exist!' })
+        }
+
         return res.json(user);
     } catch (e) {
         console.error(e);

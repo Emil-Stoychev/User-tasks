@@ -9,10 +9,12 @@ export default async (req, res) => {
         const client = await clientPromise;
         const db = client.db("UserTasks");
 
-        let user = await db.collection('users').findOne({ _id: new ObjectId(req.query.userId) })
+        let userData = jwt.decode(req?.headers.authorization)
 
-        if (user._id == null) {
-            return res.json({ message: 'User does not exist!' })
+        let user = await db.collection('users').findOne({ _id: new ObjectId(userData?._id) })
+
+        if (!user?._id) {
+            return res.json({ message: 'Access denied!' })
         }
 
         await db.collection('tasks').deleteMany({ author: user?._id.toString() })

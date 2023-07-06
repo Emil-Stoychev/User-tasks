@@ -46,7 +46,6 @@ export const TaskTemplate = (props: {
     e.preventDefault();
 
     let validateData = schema.validate(data);
-    console.log(validateData?.error?.message);
 
     if (validateData?.error?.message == undefined) {
       const response = await fetch("/api/edit", {
@@ -60,8 +59,9 @@ export const TaskTemplate = (props: {
       const jsonData = await response.json();
 
       if (jsonData?.message != null) {
-        if (jsonData?.message == "Invalid token, please login!") {
+        if (jsonData?.message == "Invalid token, please login!" || jsonData?.message == 'User not found!') {
           localStorage.removeItem("sessionStorage");
+          setErrors({ message: jsonData?.message, type: "" });
 
           route.push("/login");
         }
