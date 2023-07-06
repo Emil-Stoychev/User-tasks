@@ -19,14 +19,16 @@ export default function Register() {
   const route = useRouter();
   const [errors, setErrors] = useGlobalErrorsHook();
 
-  const onChangeHandler = (e: any) => {
+  const onChangeHandler = (e: React.SyntheticEvent) => {
+    let target = e.target as HTMLInputElement
+
     setData((state) => ({
       ...state,
-      [e.target.name]: e.target.value,
+      [target.name]: target.value,
     }));
   };
 
-  const onSubmitForm = async (e: any) => {
+  const onSubmitForm = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
 
     let validateData = schema.validate(data);

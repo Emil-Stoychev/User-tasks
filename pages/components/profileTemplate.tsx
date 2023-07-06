@@ -12,17 +12,21 @@ const ProfileTemplate = (props: {
   deleteProfile: Function,
   onSubmitEditPass: Function,
 }) => {
-  const onChangeEditHandler = (e: any) => {
-    props.setEditOption((state: any) => ({
+  const onChangeEditHandler = (e: React.SyntheticEvent) => {
+    let target = e.target as HTMLInputElement
+
+    props.setEditOption((state: EditOptionIn) => ({
       ...state,
-      [e.target.name]: e.target.value,
+      [target.name]: target.value,
     }));
   };
 
-  const onChangeConfirmHandler = (e: any) => {
-    props.setDelOption((state: any) => ({
+  const onChangeConfirmHandler = (e: React.SyntheticEvent) => {
+    let target = e.target as HTMLInputElement
+
+    props.setDelOption((state: DeleteOption) => ({
       ...state,
-      [e.target.name]: e.target.value,
+      [target.name]: target.value,
     }));
   };
 

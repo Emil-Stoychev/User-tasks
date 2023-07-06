@@ -2,12 +2,13 @@ import { useRouter } from "next/router";
 import TaskTemplate from "./taskTemplate";
 import styles from './taskTemplate.module.css'
 import useGlobalErrorsHook from "../../hooks/useGlobalErrors";
+import { Task } from "../../lib/types/taskInterface";
 
-const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
+const AllTasksComp = (props: { tasks: Task[], setTasks: Function }) => {
   const route = useRouter();
-  const [errors, setErrors] = useGlobalErrorsHook()
+  const [_errors, setErrors] = useGlobalErrorsHook()
 
-  const deleteTask = async (taskId: any) => {
+  const deleteTask = async (taskId: object | string | undefined) => {
     const response = await fetch(`/api/deleteTask/${taskId}`, {
       method: "DELETE",
       headers: {
@@ -28,12 +29,12 @@ const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
       return setErrors({message: jsonData?.message, type: ''})
     }
 
-    props.setTasks((state: any) =>
-      state.filter((x: any) => x?._id != jsonData.taskId)
+    props.setTasks((state: Task[]) =>
+      state.filter((x: Task) => x?._id != jsonData.taskId)
     );
   };
 
-  const changeStatus = async (taskId: any, status: boolean) => {
+  const changeStatus = async (taskId: object | string | undefined, status: boolean) => {
     const response = await fetch(`/api/changeStatus/${taskId}`, {
       method: "PUT",
       headers: {
@@ -55,8 +56,8 @@ const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
       return setErrors({message: jsonData?.message, type: ''})
     }
 
-    props.setTasks((state: any) =>
-      state.map((x: any) => {
+    props.setTasks((state: Task[]) =>
+      state.map((x: Task) => {
         if (x?._id == jsonData.taskId) {
           x.completed = jsonData.status;
         }
@@ -72,7 +73,7 @@ const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
       {props.tasks?.length == 0 && <h2>You don't have tasks yet.</h2>}
 
       <ul className={styles.allCards}>
-        {props.tasks?.map((task: any) => (
+        {props.tasks?.map((task: Task) => (
           <TaskTemplate key={task._id} task={task} setTasks={props.setTasks} deleteTask={deleteTask} changeStatus={changeStatus} />
         ))}
       </ul>

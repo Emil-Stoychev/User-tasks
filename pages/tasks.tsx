@@ -2,9 +2,8 @@ import clientPromise from "../lib/mongodb";
 import Layout from "./Layout";
 import { Task } from "../lib/types/taskInterface";
 
-export default function Tasks(props: { tasks: [Task] }) {
+export default function Tasks(props: { tasks: Task[] }) {
   return (
-    <>
       <Layout>
         <div>
           <h1>Top 20 Tasks of All Time</h1>
@@ -21,7 +20,6 @@ export default function Tasks(props: { tasks: [Task] }) {
           </ul>
         </div>
       </Layout>
-    </>
   );
 }
 

@@ -15,9 +15,9 @@ const SearchTemplate = (props: {
     setSortOption((state) => !state);
 
     if (!sortOption) {
-      props.setTasks((state: any) => state.sort((a: any, b: any) => b.title.localeCompare(a.title)));
+      props.setTasks((state: Task[]) => state.sort((a: Task, b: Task) => b.title.localeCompare(a.title)));
     } else {
-      props.setTasks((state: any) => state.sort((a: any, b: any) => a.title.localeCompare(b.title)));
+      props.setTasks((state: Task[]) => state.sort((a: Task, b: Task) => a.title.localeCompare(b.title)));
     }
   };
 

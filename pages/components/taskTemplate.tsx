@@ -25,10 +25,12 @@ const TaskTemplate = (props: {
   });
   const route = useRouter();
 
-  const onChangeHandler = (e: any) => {
+  const onChangeHandler = (e: React.SyntheticEvent) => {
+    let target = e.target as HTMLInputElement
+
     setData((state) => ({
       ...state,
-      [e.target.name]: e.target.value,
+      [target.name]: target.value,
     }));
   };
 
@@ -42,7 +44,7 @@ const TaskTemplate = (props: {
     }
   };
 
-  const onEditSubmit = async (e: any) => {
+  const onEditSubmit = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
 
     let validateData = schema.validate(data);
@@ -75,8 +77,8 @@ const TaskTemplate = (props: {
       return setErrors({ message: jsonData?.message, type: "" });
     }
 
-    props.setTasks((state: any) =>
-      state.map((x: any) => {
+    props.setTasks((state: Task[]) =>
+      state.map((x: Task) => {
         if (x._id == props.task._id) {
           x.title = data.title;
           x.description = data.description;

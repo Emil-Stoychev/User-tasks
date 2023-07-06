@@ -52,7 +52,7 @@ export default function Profile() {
     }
   }, []);
 
-  const deleteProfile = async (e: any) => {
+  const deleteProfile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (
@@ -76,7 +76,7 @@ export default function Profile() {
     }
   };
 
-  const onSubmitEditPass = async (e: any) => {
+  const onSubmitEditPass = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     let validateData = schema.validate(editOption);

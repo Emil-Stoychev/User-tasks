@@ -19,14 +19,16 @@ export default function Create() {
   let [_errors, setErrors] = useGlobalErrorsHook();
   const route = useRouter();
 
-  const onChangeHandler = (e: any) => {
+  const onChangeHandler = (e: React.SyntheticEvent) => {
+    let target = e.target as HTMLInputElement
+
     setData((state) => ({
       ...state,
-      [e.target.name]: e.target.value,
+      [target.name]: target.value,
     }));
   };
 
-  const onSubmitForm = async (e: any) => {
+  const onSubmitForm = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
 
     let validateData = schema.validate(data);
@@ -73,7 +75,7 @@ export default function Create() {
               id="title"
               value={data.title}
               name="title"
-              onChange={onChangeHandler}
+              onChange={(e) => onChangeHandler(e)}
             />
           </div>
           <div className="form-group">
@@ -83,13 +85,13 @@ export default function Create() {
               name="description"
               id="description"
               value={data?.description || ""}
-              onChange={onChangeHandler}
+              onChange={(e) => onChangeHandler(e)}
             ></textarea>
           </div>
           <button
             type="submit"
             className="btn btn-default"
-            onClick={onSubmitForm}
+            onClick={(e: React.MouseEvent<HTMLElement>) => onSubmitForm(e)}
           >
             Create
           </button>
