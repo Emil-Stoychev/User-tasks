@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Task } from "../types/taskInterface";
+import Task from "../types/taskInterface";
 import Joi from "joi";
 import styles from "./taskTemplate.module.css";
 import useGlobalErrorsHook from "../hooks/useGlobalErrors";
