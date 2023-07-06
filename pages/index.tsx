@@ -5,9 +5,9 @@ import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import styles from "./index.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { AllTasksComp } from "./components/task";
-import { GuestComp } from "./components/guestComp";
-import { Task } from "./types/taskInterface";
+import AllTasksComp from "./components/task";
+import GuestComp from "./components/guestComp";
+import Task from "./types/taskInterface";
 import useGlobalErrorsHook from "./hooks/useGlobalErrors";
 
 type ConnectionStatus = {

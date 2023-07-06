@@ -11,7 +11,7 @@ const schema = Joi.object({
   description: Joi.string().min(3).max(300).required(),
 });
 
-export const TaskTemplate = (props: {
+const TaskTemplate = (props: {
   task: Task;
   setTasks: Function;
   deleteTask: Function;
@@ -167,3 +167,5 @@ export const TaskTemplate = (props: {
     </>
   );
 };
+
+export default TaskTemplate

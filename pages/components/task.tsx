@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
-import { TaskTemplate } from "./taskTemplate";
+import TaskTemplate from "./taskTemplate";
 import styles from './taskTemplate.module.css'
 import useGlobalErrorsHook from "../hooks/useGlobalErrors";
 
-export const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
+const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
   const route = useRouter();
   const [errors, setErrors] = useGlobalErrorsHook()
 
@@ -79,3 +79,5 @@ export const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => 
     </>
   );
 };
+
+export default AllTasksComp

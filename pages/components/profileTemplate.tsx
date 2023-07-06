@@ -1,9 +1,9 @@
 import styles from "../index.module.css";
-import { ProfileInterface } from "../types/profileInterface";
-import { DeleteOption } from "../types/delOption";
-import { EditOptionIn } from "../types/editOptionIn";
+import ProfileInterface from "../types/profileInterface";
+import DeleteOption from "../types/delOption";
+import EditOptionIn from "../types/editOptionIn";
 
-export const ProfileTemplate = (props: {
+const ProfileTemplate = (props: {
   user: ProfileInterface,
   delOption: DeleteOption,
   setEditOption: Function,
@@ -140,3 +140,5 @@ export const ProfileTemplate = (props: {
     </>
   );
 };
+
+export default ProfileTemplate

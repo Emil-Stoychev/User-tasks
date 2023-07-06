@@ -1,6 +1,6 @@
 import styles from './taskTemplate.module.css'
 
-export const GuestComp = () => {
+const GuestComp = () => {
   return (
     <main className={styles.main}>
       <h3 className={styles.mainHeader}>Welcome to User Tasks App! <br /> here you can easily and quickly create, edit and track your tasks for the day!</h3>
@@ -10,3 +10,5 @@ export const GuestComp = () => {
     </main>
   );
 };
+
+export default GuestComp

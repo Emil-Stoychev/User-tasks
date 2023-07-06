@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
-import { ProfileInterface } from "./types/profileInterface";
-import { ProfileTemplate } from "./components/profileTemplate";
+import ProfileTemplate from "./components/profileTemplate";
 import useGlobalErrorsHook from "./hooks/useGlobalErrors";
 import Joi from "joi";
-import { DeleteOption } from "./types/delOption";
-import { EditOptionIn } from "./types/editOptionIn";
+import ProfileInterface from "./types/profileInterface";
+import DeleteOption from "./types/delOption";
+import EditOptionIn from "./types/editOptionIn";
 
 const schema = Joi.object({
   oldPassword: Joi.string().min(3).max(16).required(),
