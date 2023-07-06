@@ -26,7 +26,7 @@ export default function Navigation(props: {
               </Link>
             </li>
 
-            {props.user?.username ? (
+            {props.user?.username && (
               <>
                 <li>
                   <Link className="nav-link" href="/create">
@@ -39,8 +39,6 @@ export default function Navigation(props: {
                   </Link>
                 </li>
               </>
-            ) : (
-              ""
             )}
           </ul>
 

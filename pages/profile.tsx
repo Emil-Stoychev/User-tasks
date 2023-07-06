@@ -4,22 +4,18 @@ import { useRouter } from "next/router";
 import ProfileTemplate from "./components/profileTemplate";
 import useGlobalErrorsHook from "../hooks/useGlobalErrors";
 import Joi from "joi";
-import {ProfileInterface} from "../lib/types/profileInterface";
-import {DeleteOption} from "../lib/types/delOption";
-import {EditOptionIn} from "../lib/types/editOptionIn";
+import { ProfileInterface } from "../lib/types/profileInterface";
+import { DeleteOption } from "../lib/types/delOption";
+import { EditOptionIn } from "../lib/types/editOptionIn";
 
 const schema = Joi.object({
   oldPassword: Joi.string().min(3).max(16).required(),
 
   newPassword: Joi.string().min(3).max(16).required(),
-  option: true
+  option: true,
 });
 
 export default function Profile() {
-  const [data, setData] = useState({
-    username: "",
-    password: "",
-  });
   const [delOption, setDelOption] = useState<DeleteOption>({
     option: false,
     field: "",
@@ -29,7 +25,7 @@ export default function Profile() {
     oldPassword: "",
     newPassword: "",
   });
-  let [errors, setErrors] = useGlobalErrorsHook();
+  let [_errors, setErrors] = useGlobalErrorsHook();
   const [user, setUser] = useState<ProfileInterface | null>(null);
   const route = useRouter();
 
@@ -48,7 +44,7 @@ export default function Profile() {
           setUser(null);
           localStorage.removeItem("sessionStorage");
 
-          return setErrors({message: jsonData?.message, type: ''})
+          return setErrors({ message: jsonData?.message, type: "" });
         }
 
         setUser(jsonData);
@@ -57,7 +53,7 @@ export default function Profile() {
   }, []);
 
   const deleteProfile = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (
       delOption.field != "" &&
@@ -76,48 +72,54 @@ export default function Profile() {
       route.push("/login");
 
       localStorage.removeItem("sessionStorage");
-      setErrors({message: jsonData?.message, type: ''})
+      setErrors({ message: jsonData?.message, type: "" });
     }
   };
 
   const onSubmitEditPass = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
 
     let validateData = schema.validate(editOption);
 
-    if (validateData?.error?.message == undefined) {
-      let data = {
-        oldPassword: editOption.oldPassword,
-        newPassword: editOption.newPassword,
-        userId: user?._id,
-      };
-
-      const response = await fetch("/api/editProfile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const jsonData = await response.json();
-
-      if (jsonData.message != "Successfully!") {
-        return setErrors({ message: jsonData.message, type: "" });
-      } else {
-        setEditOption({ option: false, oldPassword: "", newPassword: "" });
-
-        return setErrors({ message: 'Successfully changed!', type: "" });
-      }
-    } else {
+    if (validateData?.error?.message != undefined) {
       return setErrors({ message: validateData?.error?.message, type: "" });
+    }
+
+    let data = {
+      oldPassword: editOption.oldPassword,
+      newPassword: editOption.newPassword,
+      userId: user?._id,
+    };
+
+    const response = await fetch("/api/editProfile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const jsonData = await response.json();
+
+    if (jsonData.message != "Successfully!") {
+      return setErrors({ message: jsonData.message, type: "" });
+    } else {
+      setEditOption({ option: false, oldPassword: "", newPassword: "" });
+
+      return setErrors({ message: "Successfully changed!", type: "" });
     }
   };
 
   return (
-    <>
-      <Layout>
-        <ProfileTemplate user={user as ProfileInterface} delOption={delOption} setEditOption={setEditOption} setDelOption={setDelOption} editOption={editOption} deleteProfile={deleteProfile} onSubmitEditPass={onSubmitEditPass} />
-      </Layout>
-    </>
+    <Layout>
+      <ProfileTemplate
+        user={user as ProfileInterface}
+        delOption={delOption}
+        setEditOption={setEditOption}
+        setDelOption={setDelOption}
+        editOption={editOption}
+        deleteProfile={deleteProfile}
+        onSubmitEditPass={onSubmitEditPass}
+      />
+    </Layout>
   );
 }

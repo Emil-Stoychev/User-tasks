@@ -1,9 +1,6 @@
 import clientPromise from "../../lib/mongodb";
-import jwt from 'jsonwebtoken'
 const bcrypt = require('bcrypt')
 import { ObjectId } from "mongodb";
-
-const secret = 'iasoid2319S!@#$SDAFas'
 
 export default async (req, res) => {
     try {

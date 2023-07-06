@@ -1,14 +1,13 @@
-import Head from "next/head";
 import Layout from "./Layout";
 import clientPromise from "../lib/mongodb";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import styles from "./index.module.css";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import AllTasksComp from "./components/task";
 import GuestComp from "./components/guestComp";
 import { Task } from "../lib/types/taskInterface";
 import useGlobalErrorsHook from "../hooks/useGlobalErrors";
+import SearchTemplate from "./components/searchTemplate";
 
 type ConnectionStatus = {
   isConnected: boolean;
@@ -35,8 +34,7 @@ export default function Home({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [savedTask, setSavedTask] = useState<Task[]>([]);
-  const [search, setSearch] = useState("");
-  const [sortOption, setSortOption] = useState(false);
+  const [search, setSearch] = useState<string>("");
   const [session, setSession] = useState<String | null | undefined>(undefined);
   const route = useRouter();
   const [errors, setErrors] = useGlobalErrorsHook();
@@ -73,49 +71,17 @@ export default function Home({
     setTasks((state) => state.filter((x) => x.title.includes(search)));
   }, [search]);
 
-  const sortTask = () => {
-    setSortOption((state) => !state);
-
-    if (!sortOption) {
-      setTasks((state) => state.sort((a, b) => b.title.localeCompare(a.title)));
-    } else {
-      setTasks((state) => state.sort((a, b) => a.title.localeCompare(b.title)));
-    }
-  };
-
   return (
     <Layout>
       <main className={styles.main}>
         <div>
           {session != undefined ? (
-            <>
-              <div className="container">
-                <div className="row justify-content-center">
-                  <div className="col-lg-6 col-md-8">
-                    <div
-                      className="d-flex align-items-center"
-                      id={styles.searchBtns}
-                    >
-                      <input
-                        type="search"
-                        className="form-control mr-2"
-                        placeholder="Search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                      />
-                      <button
-                        onClick={() => sortTask()}
-                        className="btn btn-primary"
-                      >
-                        Sort
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <AllTasksComp tasks={tasks} setTasks={setTasks} />
-            </>
+            <SearchTemplate
+              tasks={tasks}
+              setTasks={setTasks}
+              search={search}
+              setSearch={setSearch}
+            />
           ) : (
             <GuestComp />
           )}

@@ -21,7 +21,7 @@ export default function Login() {
     username: "",
     password: "",
   });
-  let [errors, setErrors] = useGlobalErrorsHook();
+  let [_errors, setErrors] = useGlobalErrorsHook();
   const route = useRouter();
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,27 +36,27 @@ export default function Login() {
 
     let validateData = schema.validate(data);
 
-    if (validateData?.error?.message == undefined) {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const jsonData = await response.json();
-
-      if (jsonData.message) {
-        setErrors({ message: jsonData.message, type: "" });
-
-        return console.log(jsonData.message);
-      }
-
-      localStorage.setItem("sessionStorage", jsonData);
-      route.push("/");
-    } else {
-      setErrors({ message: validateData?.error?.message, type: "" });
+    if (validateData?.error?.message != undefined) {
+      return setErrors({ message: validateData?.error?.message, type: "" });
     }
+
+    const response = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const jsonData = await response.json();
+
+    if (jsonData.message) {
+      setErrors({ message: jsonData.message, type: "" });
+
+      return console.log(jsonData.message);
+    }
+
+    localStorage.setItem("sessionStorage", jsonData);
+    route.push("/");
   };
 
   return (

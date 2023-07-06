@@ -19,10 +19,7 @@ export default async (req, res) => {
             return res.json({ message: 'User not found!' })
         }
 
-        const tasks = await db.collection("tasks").find({ author: userData._id })
-            //    .sort({ metacritic: -1 })
-            //    .limit(10)
-            .toArray();
+        const tasks = await db.collection("tasks").find({ author: userData._id }).toArray();
 
         res.json(tasks);
     } catch (e) {

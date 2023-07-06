@@ -16,7 +16,7 @@ export default function Create() {
     title: "",
     description: "",
   });
-  let [errors, setErrors] = useGlobalErrorsHook();
+  let [_errors, setErrors] = useGlobalErrorsHook();
   const route = useRouter();
 
   const onChangeHandler = (e: any) => {
@@ -31,69 +31,70 @@ export default function Create() {
 
     let validateData = schema.validate(data);
 
-    if (validateData?.error?.message == undefined) {
-      const response = await fetch("/api/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("sessionStorage")}`,
-        },
-        body: JSON.stringify(data),
-      });
-      const jsonData = await response.json();
-
-      if (jsonData.message != null) {
-        if (jsonData.message == "Invalid access token, please login!" || jsonData.message == "User not found!") {
-          localStorage.removeItem("sessionStorage");
-          route.push("/login");
-        }
-        return setErrors({ message: jsonData?.message, type: "" });
-      }
-
-      route.push("/");
-    } else {
+    if (validateData?.error?.message != undefined) {
       return setErrors({ message: validateData?.error?.message, type: "" });
     }
+
+    const response = await fetch("/api/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("sessionStorage")}`,
+      },
+      body: JSON.stringify(data),
+    });
+    const jsonData = await response.json();
+
+    if (jsonData.message != null) {
+      if (
+        jsonData.message == "Invalid access token, please login!" ||
+        jsonData.message == "User not found!"
+      ) {
+        localStorage.removeItem("sessionStorage");
+        route.push("/login");
+      }
+      return setErrors({ message: jsonData?.message, type: "" });
+    }
+
+    route.push("/");
   };
 
   return (
-    <>
-      <Layout>
-        <main className={styles.main}>
-          <h2>Create page</h2>
+    <Layout>
+      <main className={styles.main}>
+        <h2>Create page</h2>
 
-          <form action="/action_page.php">
-            <div className="form-group">
-              <label htmlFor="title">Title:</label>
-              <input
-                type="text"
-                className="form-control"
-                id="title"
-                value={data.title}
-                name="title"
-                onChange={onChangeHandler}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="description">Description:</label>
-              <textarea
-                className={`form-control ${styles.description}`}
-                name="description"
-                id="description"
-                value={data?.description || ""}
-                onChange={onChangeHandler}
-              ></textarea>
-            </div>
-            <button
-              type="submit"
-              className="btn btn-default"
-              onClick={onSubmitForm}
-            >
-              Create
-            </button>
-          </form>
-        </main>
-      </Layout>
-    </>
+        <form action="/action_page.php">
+          <div className="form-group">
+            <label htmlFor="title">Title:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="title"
+              value={data.title}
+              name="title"
+              onChange={onChangeHandler}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Description:</label>
+            <textarea
+              className={`form-control ${styles.description}`}
+              name="description"
+              id="description"
+              value={data?.description || ""}
+              onChange={onChangeHandler}
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            className="btn btn-default"
+            onClick={onSubmitForm}
+          >
+            Create
+          </button>
+        </form>
+      </main>
+    </Layout>
   );
 }

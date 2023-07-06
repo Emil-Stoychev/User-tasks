@@ -2,8 +2,6 @@ import clientPromise from "../../lib/mongodb";
 import jwt from 'jsonwebtoken'
 import { ObjectId } from "mongodb";
 
-const secret = 'iasoid2319S!@#$SDAFas'
-
 export default async (req, res) => {
     try {
         const client = await clientPromise;

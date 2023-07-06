@@ -17,7 +17,7 @@ const TaskTemplate = (props: {
   deleteTask: Function;
   changeStatus: Function;
 }) => {
-  let [errors, setErrors] = useGlobalErrorsHook();
+  let [_errors, setErrors] = useGlobalErrorsHook();
   const [isEdit, setIsEdit] = useState(false);
   const [data, setData] = useState({
     title: "",
@@ -47,47 +47,47 @@ const TaskTemplate = (props: {
 
     let validateData = schema.validate(data);
 
-    if (validateData?.error?.message == undefined) {
-      const response = await fetch("/api/edit", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("sessionStorage")}`,
-        },
-        body: JSON.stringify({ data: data, taskId: props.task._id }),
-      });
-      const jsonData = await response.json();
-
-      if (jsonData?.message != null) {
-        if (
-          jsonData?.message == "Invalid token, please login!" ||
-          jsonData?.message == "User not found!"
-        ) {
-          localStorage.removeItem("sessionStorage");
-          setErrors({ message: jsonData?.message, type: "" });
-
-          route.push("/login");
-        }
-
-        return setErrors({ message: jsonData?.message, type: "" });
-      }
-
-      props.setTasks((state: any) =>
-        state.map((x: any) => {
-          if (x._id == props.task._id) {
-            x.title = data.title;
-            x.description = data.description;
-          }
-
-          return x;
-        })
-      );
-
-      setIsEdit(false);
-      setData({ title: "", description: "" });
-    } else {
+    if (validateData?.error?.message != undefined) {
       return setErrors({ message: validateData?.error?.message, type: "" });
     }
+
+    const response = await fetch("/api/edit", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${localStorage.getItem("sessionStorage")}`,
+      },
+      body: JSON.stringify({ data: data, taskId: props.task._id }),
+    });
+    const jsonData = await response.json();
+
+    if (jsonData?.message != null) {
+      if (
+        jsonData?.message == "Invalid token, please login!" ||
+        jsonData?.message == "User not found!"
+      ) {
+        localStorage.removeItem("sessionStorage");
+        setErrors({ message: jsonData?.message, type: "" });
+
+        route.push("/login");
+      }
+
+      return setErrors({ message: jsonData?.message, type: "" });
+    }
+
+    props.setTasks((state: any) =>
+      state.map((x: any) => {
+        if (x._id == props.task._id) {
+          x.title = data.title;
+          x.description = data.description;
+        }
+
+        return x;
+      })
+    );
+
+    setIsEdit(false);
+    setData({ title: "", description: "" });
   };
 
   return (

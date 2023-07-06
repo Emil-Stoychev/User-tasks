@@ -2,8 +2,6 @@ import clientPromise from "../../lib/mongodb";
 import jwt from 'jsonwebtoken'
 const bcrypt = require('bcrypt')
 
-const secret = 'iasoid2319S!@#$SDAFas'
-
 export default async (req, res) => {
     try {
         const client = await clientPromise;
@@ -25,7 +23,7 @@ export default async (req, res) => {
         }
 
         let result = await new Promise((resolve, reject) => {
-            jwt.sign({ _id: user?._id, username: user?.username }, secret, { expiresIn: '2d' }, (err, token) => {
+            jwt.sign({ _id: user?._id, username: user?.username }, process.env.secret, { expiresIn: '2d' }, (err, token) => {
                 if (err) {
                     return reject(err)
                 }

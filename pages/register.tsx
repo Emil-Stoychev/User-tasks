@@ -6,7 +6,7 @@ import styles from "./index.module.css";
 import useGlobalErrorsHook from "../hooks/useGlobalErrors";
 
 const schema = Joi.object({
-  username: Joi.string().alphanum().min(3).max(16).required(),
+  username: Joi.string().min(3).max(16).required(),
 
   password: Joi.string().min(3).max(16).required(),
 });
@@ -31,66 +31,64 @@ export default function Register() {
 
     let validateData = schema.validate(data);
 
-    if (validateData?.error?.message == undefined) {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const jsonData = await response.json();
-
-      if (jsonData.message) {
-        return setErrors({ message: jsonData.message, type: "" });
-      }
-
-      localStorage.setItem("sessionStorage", jsonData);
-      route.push("/");
-    } else {
-      setErrors({ message: validateData?.error?.message, type: "" });
+    if (validateData?.error?.message != undefined) {
+      return setErrors({ message: validateData?.error?.message, type: "" });
     }
+
+    const response = await fetch("/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const jsonData = await response.json();
+
+    if (jsonData.message) {
+      return setErrors({ message: jsonData.message, type: "" });
+    }
+
+    localStorage.setItem("sessionStorage", jsonData);
+    route.push("/");
   };
 
   return (
-    <>
-      <Layout>
-        <main className={styles.main}>
-          <h2>Register page</h2>
+    <Layout>
+      <main className={styles.main}>
+        <h2>Register page</h2>
 
-          <form action="/action_page.php">
-            <div className="form-group">
-              <label htmlFor="username">Username:</label>
-              <input
-                type="text"
-                className="form-control"
-                id="username"
-                value={data.username}
-                name="username"
-                onChange={onChangeHandler}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="pwd">Password:</label>
-              <input
-                type="password"
-                className="form-control"
-                name="password"
-                id="pwd"
-                value={data.password}
-                onChange={onChangeHandler}
-              />
-            </div>
-            <button
-              type="submit"
-              className="btn btn-default"
-              onClick={onSubmitForm}
-            >
-              Register
-            </button>
-          </form>
-        </main>
-      </Layout>
-    </>
+        <form action="/action_page.php">
+          <div className="form-group">
+            <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="username"
+              value={data.username}
+              name="username"
+              onChange={onChangeHandler}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="pwd">Password:</label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              id="pwd"
+              value={data.password}
+              onChange={onChangeHandler}
+            />
+          </div>
+          <button
+            type="submit"
+            className="btn btn-default"
+            onClick={onSubmitForm}
+          >
+            Register
+          </button>
+        </form>
+      </main>
+    </Layout>
   );
 }
