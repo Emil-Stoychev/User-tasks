@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Snackbar from 'awesome-snackbar';
 import { useRouter } from "next/router";
-import { Error } from "../types/errorInterface";
+import Error from "../types/errorInterface";
 
 const useGlobalErrorsHook = () => {
     const [errors, setErrors] = useState<Error>({
