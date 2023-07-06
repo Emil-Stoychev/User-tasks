@@ -3,7 +3,7 @@ import Footer from "./core/footer/Footer";
 import { ReactNode, useEffect, useState } from "react";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import Head from "next/head";
-import { ProfileInterface } from "./types/profileInterface";
+import ProfileInterface from "./types/profileInterface";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<ProfileInterface | null>(null);
