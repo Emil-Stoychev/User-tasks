@@ -7,8 +7,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import AllTasksComp from "./components/task";
 import GuestComp from "./components/guestComp";
-import Task from "./types/taskInterface";
-import useGlobalErrorsHook from "./hooks/useGlobalErrors";
+import { Task } from "../lib/types/taskInterface";
+import useGlobalErrorsHook from "../hooks/useGlobalErrors";
 
 type ConnectionStatus = {
   isConnected: boolean;
@@ -39,7 +39,7 @@ export default function Home({
   const [sortOption, setSortOption] = useState(false);
   const [session, setSession] = useState<String | null | undefined>(undefined);
   const route = useRouter();
-  const [errors, setErrors] = useGlobalErrorsHook()
+  const [errors, setErrors] = useGlobalErrorsHook();
 
   useEffect(() => {
     if (localStorage.getItem("sessionStorage")) {
@@ -58,7 +58,7 @@ export default function Home({
           setSession(undefined);
           localStorage.removeItem("sessionStorage");
 
-          return setErrors({message: jsonData?.message, type: ''})
+          return setErrors({ message: jsonData?.message, type: "" });
         }
 
         setTasks(jsonData);
@@ -92,7 +92,10 @@ export default function Home({
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-lg-6 col-md-8">
-                    <div className="d-flex align-items-center" id={styles.searchBtns}>
+                    <div
+                      className="d-flex align-items-center"
+                      id={styles.searchBtns}
+                    >
                       <input
                         type="search"
                         className="form-control mr-2"

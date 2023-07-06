@@ -2,7 +2,7 @@ import { useState, FormEvent } from "react";
 import Layout from "./Layout";
 import { useRouter } from "next/router";
 import Joi from "joi";
-import useGlobalErrorsHook from "./hooks/useGlobalErrors";
+import useGlobalErrorsHook from "../hooks/useGlobalErrors";
 import styles from "./index.module.css";
 
 interface FormData {

@@ -3,7 +3,7 @@ import Layout from "./Layout";
 import { useRouter } from "next/router";
 import Joi from "joi";
 import styles from "./index.module.css";
-import useGlobalErrorsHook from "./hooks/useGlobalErrors";
+import useGlobalErrorsHook from "../hooks/useGlobalErrors";
 
 const schema = Joi.object({
   title: Joi.string().min(3).max(32).required(),

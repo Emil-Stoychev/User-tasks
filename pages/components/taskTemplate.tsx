@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Task from "../types/taskInterface";
+import { Task } from "../../lib/types/taskInterface";
 import Joi from "joi";
 import styles from "./taskTemplate.module.css";
-import useGlobalErrorsHook from "../hooks/useGlobalErrors";
+import useGlobalErrorsHook from "../../hooks/useGlobalErrors";
 
 const schema = Joi.object({
   title: Joi.string().min(3).max(32).required(),
@@ -59,7 +59,10 @@ const TaskTemplate = (props: {
       const jsonData = await response.json();
 
       if (jsonData?.message != null) {
-        if (jsonData?.message == "Invalid token, please login!" || jsonData?.message == 'User not found!') {
+        if (
+          jsonData?.message == "Invalid token, please login!" ||
+          jsonData?.message == "User not found!"
+        ) {
           localStorage.removeItem("sessionStorage");
           setErrors({ message: jsonData?.message, type: "" });
 
@@ -168,4 +171,4 @@ const TaskTemplate = (props: {
   );
 };
 
-export default TaskTemplate
+export default TaskTemplate;

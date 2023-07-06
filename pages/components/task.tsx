@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import TaskTemplate from "./taskTemplate";
 import styles from './taskTemplate.module.css'
-import useGlobalErrorsHook from "../hooks/useGlobalErrors";
+import useGlobalErrorsHook from "../../hooks/useGlobalErrors";
 
 const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
   const route = useRouter();
@@ -69,10 +69,10 @@ const AllTasksComp = (props: { tasks: Object[], setTasks: Function }) => {
   return (
     <>
       <br />
-      {props.tasks.length == 0 && <h2>You don't have tasks yet.</h2>}
+      {props.tasks?.length == 0 && <h2>You don't have tasks yet.</h2>}
 
       <ul className={styles.allCards}>
-        {props.tasks.map((task: any) => (
+        {props.tasks?.map((task: any) => (
           <TaskTemplate key={task._id} task={task} setTasks={props.setTasks} deleteTask={deleteTask} changeStatus={changeStatus} />
         ))}
       </ul>

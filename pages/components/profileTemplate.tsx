@@ -1,7 +1,7 @@
 import styles from "../index.module.css";
-import ProfileInterface from "../types/profileInterface";
-import DeleteOption from "../types/delOption";
-import EditOptionIn from "../types/editOptionIn";
+import {ProfileInterface} from "../../lib/types/profileInterface";
+import {DeleteOption} from "../../lib/types/delOption";
+import {EditOptionIn} from "../../lib/types/editOptionIn";
 
 const ProfileTemplate = (props: {
   user: ProfileInterface,
@@ -39,7 +39,7 @@ const ProfileTemplate = (props: {
           <div className="card-body">
             <h5 className="card-title">{props.user?.username}</h5>
 
-            {!props.delOption.option && !props.editOption.option && (
+            {!props?.delOption?.option && !props?.editOption?.option && (
               <>
                 <button
                   className="btn btn-primary"
@@ -62,7 +62,7 @@ const ProfileTemplate = (props: {
               </>
             )}
 
-            {props.delOption.option && (
+            {props?.delOption?.option && (
               <>
                 <form action="/action_page.php">
                   <div className="form-group">
@@ -71,7 +71,7 @@ const ProfileTemplate = (props: {
                       className="form-control"
                       type="text"
                       name="field"
-                      value={props.delOption.field}
+                      value={props?.delOption?.field}
                       onChange={(e) => onChangeConfirmHandler(e)}
                     />
                   </div>
@@ -88,7 +88,7 @@ const ProfileTemplate = (props: {
               </>
             )}
 
-            {props.editOption.option && (
+            {props?.editOption?.option && (
               <>
                 <form action="/action_page.php">
                   <div className="form-group">

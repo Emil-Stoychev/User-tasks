@@ -3,15 +3,15 @@ import Footer from "./core/footer/Footer";
 import { ReactNode, useEffect, useState } from "react";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import Head from "next/head";
-import ProfileInterface from "./types/profileInterface";
+import { ProfileInterface } from "../lib/types/profileInterface";
 
 const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<ProfileInterface | null>(null);
 
   useEffect(() => {
     if (localStorage.getItem("sessionStorage")) {
-      let token = localStorage.getItem("sessionStorage") || ''
-      let userData: JwtPayload | null = null
+      let token = localStorage.getItem("sessionStorage") || "";
+      let userData: JwtPayload | null = null;
 
       userData = jwt.decode(token) as JwtPayload;
 
