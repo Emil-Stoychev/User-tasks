@@ -1,4 +1,4 @@
 export interface Error {
-    message: String,
+    message: string,
     type: string
 }

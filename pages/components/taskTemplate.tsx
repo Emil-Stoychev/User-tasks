@@ -90,7 +90,7 @@ export const TaskTemplate = (props: {
   return (
     <>
       <div className={props?.task?.completed ? styles.card : styles.cardA}>
-        <div className="card-header">{props.task?.createdAt}</div>
+        <div className="card-header"></div>
         <div className="card-body" id={styles.cardBody}>
           {isEdit ? (
             <div>

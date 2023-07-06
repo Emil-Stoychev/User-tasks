@@ -75,7 +75,7 @@ export const ProfileTemplate = (props: {
                       onChange={(e) => onChangeConfirmHandler(e)}
                     />
                   </div>
-                  <button className="btn btn-primary" onClick={() => props.deleteProfile()}>
+                  <button className="btn btn-primary" onClick={(e) => props.deleteProfile(e)}>
                     ✓
                   </button>
                   <button
@@ -115,7 +115,7 @@ export const ProfileTemplate = (props: {
                   </div>
                   <button
                     className="btn btn-primary"
-                    onClick={() => props.onSubmitEditPass()}
+                    onClick={(e) => props.onSubmitEditPass(e)}
                   >
                     ✓
                   </button>

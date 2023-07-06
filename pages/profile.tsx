@@ -8,7 +8,6 @@ import Joi from "joi";
 import { DeleteOption } from "./types/delOption";
 import { EditOptionIn } from "./types/editOptionIn";
 
-
 const schema = Joi.object({
   oldPassword: Joi.string().min(3).max(16).required(),
 
@@ -58,7 +57,7 @@ export default function Profile() {
   }, []);
 
   const deleteProfile = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (
       delOption.field != "" &&
@@ -74,15 +73,15 @@ export default function Profile() {
       });
       const jsonData = await response.json();
 
-      setErrors({message: jsonData?.message, type: ''})
+      route.push("/login");
 
       localStorage.removeItem("sessionStorage");
-      route.push("/login");
+      setErrors({message: jsonData?.message, type: ''})
     }
   };
 
   const onSubmitEditPass = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault()
 
     let validateData = schema.validate(editOption);
 
@@ -117,7 +116,7 @@ export default function Profile() {
   return (
     <>
       <Layout>
-        <ProfileTemplate user={user} delOption={delOption} setEditOption={setEditOption} setDelOption={setDelOption} editOption={editOption} deleteProfile={deleteProfile} onSubmitEditPass={onSubmitEditPass} />
+        <ProfileTemplate user={user as ProfileInterface} delOption={delOption} setEditOption={setEditOption} setDelOption={setDelOption} editOption={editOption} deleteProfile={deleteProfile} onSubmitEditPass={onSubmitEditPass} />
       </Layout>
     </>
   );

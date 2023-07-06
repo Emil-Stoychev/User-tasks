@@ -43,12 +43,10 @@ export default function Create() {
       const jsonData = await response.json();
 
       if (jsonData.message != null) {
-        if (jsonData.message == "Invalid token, please login!" || jsonData.message == "User not found!") {
+        if (jsonData.message == "Invalid access token, please login!" || jsonData.message == "User not found!") {
           localStorage.removeItem("sessionStorage");
-
           route.push("/login");
         }
-
         return setErrors({ message: jsonData?.message, type: "" });
       }
 

@@ -1,18 +1,22 @@
 import Navigation from "./core/navigation/Navigation";
 import Footer from "./core/footer/Footer";
-import { useEffect, useState } from "react";
-import jwt from "jsonwebtoken";
+import { ReactNode, useEffect, useState } from "react";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import Head from "next/head";
+import { ProfileInterface } from "./types/profileInterface";
 
-const Layout: React.FC = ({ children }) => {
-  const [user, setUser] = useState(null);
+const Layout: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<ProfileInterface | null>(null);
 
   useEffect(() => {
     if (localStorage.getItem("sessionStorage")) {
-      let userData = jwt.decode(localStorage.getItem("sessionStorage"));
+      let token = localStorage.getItem("sessionStorage") || ''
+      let userData: JwtPayload | null = null
+
+      userData = jwt.decode(token) as JwtPayload;
 
       if (userData?.username) {
-        setUser(userData);
+        setUser(userData as ProfileInterface);
       } else {
         setUser(null);
       }
@@ -33,7 +37,7 @@ const Layout: React.FC = ({ children }) => {
       </Head>
 
       <div id="container">
-        <Navigation user={user} setUser={setUser} />
+        <Navigation user={user as ProfileInterface} setUser={setUser} />
 
         <main>{children}</main>
 

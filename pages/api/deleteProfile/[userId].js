@@ -10,9 +10,9 @@ export default async (req, res) => {
         const db = client.db("UserTasks");
 
         let userData = jwt.decode(req?.headers.authorization)
-
+        
         let user = await db.collection('users').findOne({ _id: new ObjectId(userData?._id) })
-
+        
         if (!user?._id) {
             return res.json({ message: 'Access denied!' })
         }
